@@ -6,17 +6,8 @@ on:
       - master
 
 jobs:
-  job1:
-    name: Job 1
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Use cancel redundant
-        uses: technote-space/auto-cancel-redundant-job@v1
-
   job2:
     name: Job 2-${{ matrix.case }}
-    needs: job1 
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,6 +16,9 @@ jobs:
         case: [1, 2, 3]
 
     steps:
+      - name: Use cancel redundant
+        uses: technote-space/auto-cancel-redundant-job@v1
+
       - name: Checkout codes
         uses: actions/checkout@v2
 
