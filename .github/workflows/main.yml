@@ -17,8 +17,10 @@ jobs:
       - name: Use cancel redundant
         run: |
           cd ${GITHUB_WORKSPACE}
+          pwd
+          ls -l
           repo='https://api.github.com/repos/MJRCS/GHA-PR-test/actions/runs'
-          cancel=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./cancel_reduncant.py)
+          cancel=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./cancel_redundant.py)
           if [[ $cancel != '' ]]; then
             for i in $cancel; do
               curl -X POST -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" ${repo}/$i
