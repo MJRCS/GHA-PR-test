@@ -11,6 +11,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+
       - name: Use cancel redundant
         run: |
           cd ${GITHUB_WORKSPACE}
