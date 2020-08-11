@@ -12,10 +12,7 @@ jobs:
 
     steps:
       - name: Use cancel redundant
-        #uses: technote-space/auto-cancel-redundant-job@v1.4.3
-        uses: styfle/cancel-workflow-action@0.4.1
-        with:
-          access_token: ${{ github.token }}
+        uses: technote-space/auto-cancel-redundant-job@v1.4.3
 
   job2:
     name: Job 2-${{ matrix.case }}
@@ -29,10 +26,7 @@ jobs:
 
     steps:
       - name: Use cancel redundant
-        #uses: technote-space/auto-cancel-redundant-job@v1.4.3
-        uses: styfle/cancel-workflow-action@0.4.1
-        with:
-          access_token: ${{ github.token }}
+        uses: technote-space/auto-cancel-redundant-job@v1.4.3
 
       - name: Checkout codes
         uses: actions/checkout@v2
