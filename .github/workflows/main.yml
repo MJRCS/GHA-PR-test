@@ -12,7 +12,18 @@ jobs:
 
     steps:
       - name: Use cancel redundant
-        uses: technote-space/auto-cancel-redundant-job@v1.4.3
+        run: |
+          cd ${GITHUB_}
+          repo='https://api.github.com/repos/MJRCS/GHA-PR-test/actions/runs'
+          cancel=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./cancel_reduncant.py)
+          if [[ $cancel != '' ]]; then
+            for i in $cancel; do
+              curl -X POST -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" ${repo}/$i
+            done
+          fi
+        env:
+          TOKEN: ${{ secrets.MJ_PAT }}
+        #uses: technote-space/auto-cancel-redundant-job@v1.4.3
 
   job2:
     name: Job 2-${{ matrix.case }}
@@ -25,14 +36,8 @@ jobs:
         case: [1, 2, 3]
 
     steps:
-      - name: Use cancel redundant
-        uses: technote-space/auto-cancel-redundant-job@v1.4.3
-
       - name: Checkout codes
         uses: actions/checkout@v2
 
       - name: Run job
-        run: |
-          which python
-          which python3
-          ./myscript.sh
+        run: ./myscript.sh
