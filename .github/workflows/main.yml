@@ -13,7 +13,7 @@ jobs:
     steps:
       - name: Use cancel redundant
         run: |
-          cd ${GITHUB_}
+          cd ${GITHUB_WORKSPACE}
           repo='https://api.github.com/repos/MJRCS/GHA-PR-test/actions/runs'
           cancel=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./cancel_reduncant.py)
           if [[ $cancel != '' ]]; then
