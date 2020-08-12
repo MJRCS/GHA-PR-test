@@ -22,8 +22,7 @@ jobs:
           echo $cancel
           if [[ $cancel != '' ]]; then
             for i in $cancel; do
-              #curl -X POST -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
-              curl -X POST -H "Authorization: token 62051fdb38625019894f0a1cddf48ea17fd85ae2" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
+              curl -X POST -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
             done
           fi
         env:
