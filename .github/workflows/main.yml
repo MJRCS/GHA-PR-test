@@ -22,11 +22,11 @@ jobs:
           echo $cancel
           if [[ $cancel != '' ]]; then
             for i in $cancel; do
-              curl -X POST -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
+              curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
             done
           fi
-        env:
-          TOKEN: ${{ secrets.MJ_PAT }}
+        #env:
+        #  TOKEN: ${{ secrets.MJ_PAT }}
         #uses: technote-space/auto-cancel-redundant-job@v1.4.3
 
   job2:
