@@ -1,38 +1,24 @@
 name: GHA-PR-test
 
 on:
-  pull_request_target:
+  pull_request:
     branches:
       - master
 
 jobs:
-  job1:
-    name: Job 1
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout codes
-        uses: actions/checkout@v2
-
-      - name: Use cancel redundant
-        run: |
-          cd ${GITHUB_WORKSPACE}
-          repo='https://api.github.com/repos/MJRCS/GHA-PR-test/actions/runs'
-          cancel=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./cancel_redundant.py)
-          echo $cancel
-          if [[ $cancel != '' ]]; then
-            for i in $cancel; do
-              #curl -X POST -H "Authorization: token $TOKEN" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
-              curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
-            done
-          fi
-        #env:
-        #  TOKEN: ${{ secrets.MJ_PAT }}
-        #uses: technote-space/auto-cancel-redundant-job@v1.4.3
-
+#  job1:
+#    name: Job 1
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout codes
+#        uses: actions/checkout@v2
+#
+#        #uses: technote-space/auto-cancel-redundant-job@v1.4.3
+#
   job2:
     name: Job 2-${{ matrix.case }}
-    needs: job1
+    #needs: job1
     runs-on: ubuntu-latest
 
     strategy:
