@@ -23,8 +23,8 @@ jobs:
           echo ==============$cancel
           cancel=$(echo $cancel | cut -d ' ' -f 2)
           echo ==============$cancel
-          if [[ $cancel != '' ]]; then
-            for i in $cancel; do
-              curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
-            done
-          fi
+          #if [[ $cancel != '' ]]; then
+          #  for i in $cancel; do
+          #    curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
+          #  done
+          #fi
