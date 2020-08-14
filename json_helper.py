@@ -35,9 +35,8 @@ def main():
   elif sys.argv[1]=="cancel_workflow":
     wfs = cancel_workflow(data)
     if len(wfs)==0:
-      print("nothing to cancel")
+      print("")
     else:
-      for i in wfs:
-        print(i)
+      print(*wfs)
 
 if __name__ == "__main__": main()
