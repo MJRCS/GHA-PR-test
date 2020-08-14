@@ -18,6 +18,7 @@ def cancel_workflow(data):
   # GITHUB_ACTOR is the same 
   # GITHUB_HEAD_REF is the same 
   # GITHUB_RUN_ID is different (or GITHUB_SHA is different)
+  # event is pull_request
   # either queued or in_progress
   wfs=[x["id"] for x in data if x["head_repository"] is not None and
         re.search(os.environ["GITHUB_ACTOR"], x["head_repository"]["owner"]["login"]) and
