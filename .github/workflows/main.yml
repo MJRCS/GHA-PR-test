@@ -26,13 +26,19 @@ jobs:
           echo "GITHUB_HEAD_REF: ${GITHUB_HEAD_REF}"
           echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
           echo "GITHUB_API_URL: ${GITHUB_API_URL}"
-          echo "======================================="
-          cat ${GITHUB_EVENT_PATH}
-          echo "======================================="
+          export GITHUB_ACTOR
+          export GITHUB_RUN_ID
+          export GITHUB_HEAD_REF
+          repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
+          ans=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py check_skip
+          if [[ $ans == 'yes' ]]; then
+            echo '"skip-ci" was requested in the commit message"'
+            exit 1
+          fi
 
   job2:
     name: Job 2-${{ matrix.case }}
-    ##needs: job1
+    needs: job1
     runs-on: ubuntu-latest
 
     strategy:
