@@ -30,7 +30,8 @@ jobs:
           export GITHUB_RUN_ID
           export GITHUB_HEAD_REF
           repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
-          ans=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py check_skip
+          ans=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py check_skip)
+          echo $ans
           if [[ $ans == 'yes' ]]; then
             echo '"skip-ci" was requested in the commit message"'
             exit 1
