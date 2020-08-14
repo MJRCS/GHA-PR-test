@@ -31,7 +31,7 @@ jobs:
           echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
           echo "GITHUB_API_URL: ${GITHUB_API_URL}"
           echo "====================================="
-          cat ${GITHUB_API_URL}
+          cat ${GITHUB_EVENT_PATH}
           echo "====================================="
           export GITHUB_ACTOR
           export GITHUB_RUN_ID
