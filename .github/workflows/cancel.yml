@@ -20,6 +20,7 @@ jobs:
           cd ${GITHUB_WORKSPACE}
           repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
           cancel_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_skip)
+          echo "::set-env name=TRIGGER_ID::${cancel_id}"
           echo "cancel_id from skip-ci is ${cancel_id}"
           if [[ $cancel_id != -1 ]]; then
             echo "skip-ci is requested"
@@ -30,9 +31,9 @@ jobs:
           fi
 
       - name: Cancel redundant jobs
-        if: ${{ env.CURR_JOB }} == running
         run: |
           echo "CURR_JOB is $CURR_JOB"
+          echo "TRIGGER_ID is $TRIGGER_ID"
           echo "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
           echo "GITHUB_RUN_NUMBER: ${GITHUB_RUN_NUMBER}"
           echo "GITHUB_ACTION: ${GITHUB_ACTION}"
@@ -52,6 +53,7 @@ jobs:
           
           export GITHUB_ACTOR
           export GITHUB_RUN_ID
+          export TRIGGER_ID
           #export GITHUB_HEAD_REF
           cd ${GITHUB_WORKSPACE}
           repo='https://api.github.com/repos/MJRCS/GHA-PR-test/actions/runs'
@@ -64,3 +66,4 @@ jobs:
               curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
             done
           fi
+        if: env.CURR_JOB == "running"
