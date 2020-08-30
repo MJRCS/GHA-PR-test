@@ -8,7 +8,7 @@ import json
 
 def check_skip(data):
   msg = data["head_commit"]["message"]
-  if re.search("skp-ci", msg):
+  if re.search("skip-ci", msg):
     return data["id"]
   else:
     return -1
