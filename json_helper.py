@@ -9,9 +9,9 @@ import json
 def check_skip(data):
   msg = data["head_commit"]["message"]
   if re.search("skip-ci", msg):
-    return data["id"]
+    return "yes"
   else:
-    return -1
+    return "no"
 
 def cancel_workflow(data):
   # GITHUB_HEAD_REF is the same
@@ -28,8 +28,10 @@ def main():
 
   if sys.argv[1]=="check_skip":
     data = json.load(sys.stdin)["workflow_run"]
-    cancel_id = check_skip(data)
-    print(cancel_id)
+    ans = check_skip(data)
+    print(ans)
+  elif sys.argv[1]=="get_trigger_id":
+    print(json.load(sys.stdin)["workflow_run"]["id"])
   elif sys.argv[1]=="cancel_workflow":
     data = json.load(sys.stdin)["workflow_runs"]
     wfs = cancel_workflow(data)
