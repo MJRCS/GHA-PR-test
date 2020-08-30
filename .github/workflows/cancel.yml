@@ -15,8 +15,24 @@ jobs:
       - name: Checkout codes
         uses: actions/checkout@v2
 
-      - name: Use cancel redundant
+      - name: Check if skip-ci is requested
         run: |
+          cd ${GITHUB_WORKSPACE}
+          repo="${GITHUB_API_URL}/repos/${GITHUB_REPOSITORY}/actions/runs"
+          cancel_id=$(cat ${GITHUB_EVENT_PATH} | ./json_helper.py check_skip)
+          echo "cancel_id from skip-ci is ${cancel_id}"
+          if [[ $cancel_id != -1 ]]; then
+            echo "skip-ci is requested"
+            echo "::set-env name=CURR_JOB::cancelled"
+            curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$cancel_id/cancel
+          else
+            echo "::set-env name=CURR_JOB::running"
+          fi
+
+      - name: Cancel redundant jobs
+        if: $CURR_JOB == running
+        run: |
+          echo "CURR_JOB is $CURR_JOB"
           echo "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
           echo "GITHUB_RUN_NUMBER: ${GITHUB_RUN_NUMBER}"
           echo "GITHUB_ACTION: ${GITHUB_ACTION}"
@@ -31,19 +47,20 @@ jobs:
           echo "GITHUB_BASE_REF: ${GITHUB_BASE_REF}"
           echo "GITHUB_API_URL: ${GITHUB_API_URL}"
           echo "====================================="
-          cat ${GITHUB_EVENT_PATH}
+          cat ${GITHUB_EVENT_PATH} # workflow_run.id
           echo "====================================="
+          
           export GITHUB_ACTOR
           export GITHUB_RUN_ID
-          export GITHUB_HEAD_REF
+          #export GITHUB_HEAD_REF
           cd ${GITHUB_WORKSPACE}
           repo='https://api.github.com/repos/MJRCS/GHA-PR-test/actions/runs'
-          cancel=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py cancel_workflow)
-          echo ==============$cancel
+          cancel_ids=$(curl -H "Accept: application/vnd.github.v3+json" ${repo} | ./json_helper.py cancel_workflow)
+          echo ==============$cancel_ids
           #cancel=$(echo $cancel | cut -d ' ' -f 2)
-          #echo ==============$cancel
-          if [[ $cancel != '' ]]; then
-            for i in $cancel; do
+          echo ==============$cancel
+          if [[ $cancel_ids != '' ]]; then
+            for i in $cancel_ids; do
               curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$i/cancel
             done
           fi
