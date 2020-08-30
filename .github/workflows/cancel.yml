@@ -30,7 +30,7 @@ jobs:
           fi
 
       - name: Cancel redundant jobs
-        if: $CURR_JOB == running
+        if: ${{ env.CURR_JOB }} == running
         run: |
           echo "CURR_JOB is $CURR_JOB"
           echo "GITHUB_RUN_ID: ${GITHUB_RUN_ID}"
