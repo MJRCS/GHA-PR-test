@@ -24,10 +24,10 @@ jobs:
           echo "cancel_id from skip-ci is ${cancel_id}"
           if [[ $cancel_id != -1 ]]; then
             echo "skip-ci is requested"
-            echo "::set-env name=CURR_JOB::cancelled"
+            echo '::set-env name=CURR_JOB::cancelled'
             curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.v3+json" ${repo}/$cancel_id/cancel
           else
-            echo "::set-env name=CURR_JOB::running"
+            echo '::set-env name=CURR_JOB::running'
           fi
 
       - name: Cancel redundant jobs
