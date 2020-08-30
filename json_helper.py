@@ -17,7 +17,8 @@ def cancel_workflow(data):
   # GITHUB_HEAD_REF is the same 
   wfs=[x["id"] for x in data if x["head_repository"] is not None and
         re.search(os.environ["GITHUB_ACTOR"], x["head_repository"]["owner"]["login"]) and
-        x["head_branch"]=="master" and x["id"]!=int(os.environ["GITHUB_RUN_ID"]) and
+        #x["head_branch"]=="master" and x["id"]!=int(os.environ["GITHUB_RUN_ID"]) and
+        x["id"]!=int(os.environ["GITHUB_RUN_ID"]) and
         (x["status"]=="queued" or x["status"]=="in_progress")]
 
   return wfs
